@@ -23,8 +23,31 @@ public:
         }
     }
 
-    void DNA_Builder(){
-        
+    vector<char> DNA_Builder(){
+        vector<char> Complement;
+        DNA.push_back('\n');
+        for(int i=0; i< RNA.size();i++){
+            switch(RNA[i]){
+                case 'A':
+                    Complement.push_back('T');
+                    cout<<'T';
+                    break;
+                case 'C':
+                    Complement.push_back('G');
+                    cout<<'G';
+                    break;
+                case 'G':
+                    Complement.push_back('C');
+                    cout<<'C';
+                    break;
+                case 'T':
+                    Complement.push_back('A');
+                    cout<<'A';
+                    break;
+
+            }
+        }
+        return Complement;
     }
 
 
@@ -33,3 +56,10 @@ public:
 };
 
 
+int main(){
+    Genome g1;
+    g1.receive("ATTCGGGGA");
+    g1.DNA_Builder();
+
+
+}
