@@ -47,7 +47,23 @@ public:
 
             }
         }
+        cout<<endl;
         return Complement;
+    }
+
+
+    void display_RNA(){
+        for(int i=0; i < RNA.size(); i++){
+            cout<< RNA[i];
+        }
+        cout<<endl;
+    }
+
+    void display_DNA(){
+        for(int i=0; i < DNA.size(); i++ ){
+            cout<< DNA[i];
+        }
+        cout<<endl;
     }
 
 
@@ -59,7 +75,11 @@ public:
 int main(){
     Genome g1;
     g1.receive("ATTCGGGGA");
-    g1.DNA_Builder();
+    g1.receive("ATTCGGGGA\nTAAGCCCCT") ;
+    g1.display_DNA();
+    cout<<endl;
+    g1.display_RNA();
+
 
 
 }
