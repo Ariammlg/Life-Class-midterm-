@@ -23,6 +23,10 @@ public:
         }
     }
 
+    void DNA_Builder(){
+        
+    }
+
 
 
 
