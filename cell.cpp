@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+//#include <cmath>
 
 using std:: cout, std::cin, std::endl, std::vector, std::string;
 
@@ -63,7 +63,7 @@ public:
                 cout<< endl;
             }
         }
-        cout<<endl;
+        cout<<endl<<endl;
     }
 
     void minor_mutation(char c1, char c2, int n){
@@ -75,17 +75,17 @@ public:
             }
         }
         m = n;
-        for(int i=0; i< RNA.size() && m > 0 ; i++){
+        for(int i=0; i< (DNA.size()-1)/2 && m > 0 ; i++){
             if(DNA[i] == c1){
                 DNA[i] = c2;
-                DNA[i+RNA.size()+1]= comp_char(c2);
+                DNA[i+((DNA.size()-1)/2)+1]= comp_char(c2);
                 m--;
                 if(m <= 0){
                     break;
                 }
             }
-            if(DNA[i+RNA.size()+2] == c1){
-                DNA[i+RNA.size()+2] = c2;
+            if(DNA[i+((DNA.size()-1)/2)+2] == c1){
+                DNA[i+((DNA.size()-1)/2)+2] = c2;
                 DNA[i+1]= comp_char(c2);
                 m--;
             }
@@ -94,6 +94,121 @@ public:
         }
 
 
+
+    }
+
+    void major_mutation(string s1, string s2){
+        int cnt, cnt1;
+
+        for(int i=0; i<= RNA.size()-s1.size(); i++){
+            cnt=0;
+            for(int j=0; j< s1.size(); j++){
+                if(s1[j] == RNA[j+i] ){
+                    cnt++;
+                }
+            }
+            if(cnt == s1.size()){
+                for(int k=0; k<s1.size(); k++){
+                    RNA.erase(RNA.begin()+i);
+                }
+                for(int k=0; k<s2.size(); k++){
+                    RNA.insert(RNA.begin()+k+i,s2[k]);
+                }
+                break;
+            }
+
+        }
+
+        for(int i=0; i <= (DNA.size()-1)/2 - s1.size() ; i++ ){
+            cnt = 0;
+            cnt1= 0;
+            for(int j=0; j< s1.size(); j++){
+                if(s1[j] == DNA[j+i]){
+                    cnt++;
+                }
+                if(s1[j] == DNA[i + j + (DNA.size()+1)/2]){
+                    cnt1++;
+                }
+
+            }
+            if(cnt == s1.size()){
+                for(int k=0; k<s1.size(); k++){
+                    DNA.erase(DNA.begin()+i+(DNA.size()+1)/2);
+                    DNA.erase(DNA.begin()+i);
+
+                }
+                for(int k=0; k<s2.size(); k++){
+                    DNA.insert(DNA.begin() + i + k + (DNA.size()+1)/2 , comp_char(s2[k]));
+                    DNA.insert(DNA.begin()+k+i,s2[k]);
+
+                }
+                break;
+            }
+            else if(cnt1 == s1.size()){
+                for(int k=0; k<s1.size(); k++){
+                    DNA.erase(DNA.begin()+i+ (DNA.size()+1)/2);
+                    DNA.erase(DNA.begin()+i);
+                }
+                for(int k=0; k<s2.size(); k++){
+                    DNA.insert(DNA.begin()+i+k+ (DNA.size()+1)/2, s2[k]);
+                    DNA.insert(DNA.begin()+k+i, comp_char(s2[k]));
+                }
+                break;
+
+            }
+
+
+        }
+
+
+    }
+
+    void inverse_mutation(string s) {
+        int cnt,cnt1;
+        for (int i = 0; i <= RNA.size() - s.size(); i++) {
+            cnt = 0;
+            for (int j = 0; j < s.size(); j++) {
+                if (s[j] == RNA[i + j]) {
+                    cnt++;
+                }
+            }
+            if (cnt == s.size()) {
+                for (int p = 0; p < s.size(); p++) {
+                    RNA[i + p] = s[s.size() - 1 - p];
+                }
+                break;
+            }
+
+        }
+
+        for(int i=0; i <= (DNA.size()-1)/2 - s.size() ; i++ ){
+            cnt = 0;
+            cnt1= 0;
+            for(int j=0; j< s.size(); j++){
+                if(s[j] == DNA[j+i]){
+                    cnt++;
+                }
+                if(s[j] == DNA[i + j + (DNA.size()+1)/2]){
+                    cnt1++;
+                }
+
+            }
+
+            if(cnt == s.size()){
+                for(int p=0; p < s.size(); p++){
+                    DNA[i+p] = s[s.size()-1-p];
+                    DNA[i+p+(DNA.size()+1)/2]= comp_char(DNA[i+p]);
+                }
+                break;
+            }
+
+            else if(cnt1==s.size()){
+                for(int p=0; p < s.size(); p++){
+                    DNA[i+p+(DNA.size()+1)/2] = s[s.size()-1-p];
+                    DNA[i+p]= comp_char(DNA[i+p+(DNA.size()+1)/2]);
+                }
+            }
+        }
 
     }
 
@@ -106,9 +221,9 @@ public:
 
 int main(){
     Genome g1;
-    g1.receive("ACCTTG TGGAAC");
-    g1.receive("ACCTTG");
-    g1.minor_mutation('A', 'C', 2);
+    g1.receive("ATCGATCG");
+    g1.receive("AAGTCTCAGT TTCAGAGTCA");
+    g1.inverse_mutation("GATC");
     g1.display_DNA();
     g1.display_RNA();
     return 0;
