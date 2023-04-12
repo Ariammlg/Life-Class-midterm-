@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "animal.h"
 
 using std:: cout, std::cin, std::endl, std::vector, std::string;
 
