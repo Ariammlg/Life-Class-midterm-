@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
-//#include <cmath>
 
 using std:: cout, std::cin, std::endl, std::vector, std::string;
 
+
+// This function converts a character into its complement. For example:  A ==> T.
 char comp_char(char c){
     switch(c){
         case 'A':
@@ -20,9 +21,13 @@ char comp_char(char c){
 
 class Genome{
 public:
+    // We use vectors of characters instead of strings due to their flexibility.
     vector<char> RNA;
     vector<char> DNA;
 
+
+    // Receives RNA and DNA as strings and convert them to the vectors.
+    //Note that DNA is received this way: "AATTCC TTAAGG" .
     void receive(string s){
         if(s.find(' ') == string::npos){
             for(int i=0; i<s.size();i++){
@@ -35,7 +40,7 @@ public:
             }
         }
     }
-
+    //This method builds the DNA from the RNA and prints it.
     vector<char> DNA_Builder(){
         vector<char> Complement;
         for(int i=0; i< RNA.size();i++){
@@ -46,14 +51,14 @@ public:
         return Complement;
     }
 
-
+    //This method prints RNA.
     void display_RNA(){
         for(int i=0; i < RNA.size(); i++){
             cout<< RNA[i];
         }
         cout<<endl;
     }
-
+    //This method prints DNA.
     void display_DNA(){
         for(int i=0; i < DNA.size(); i++ ){
             if(DNA[i] != ' '){
@@ -65,7 +70,7 @@ public:
         }
         cout<<endl<<endl;
     }
-
+    // جهش کوچک
     void minor_mutation(char c1, char c2, int n){
         int m = n;
         for(int i=0; i < RNA.size() && m > 0 ; i++){
@@ -96,7 +101,7 @@ public:
 
 
     }
-
+    // جهش بزرگ
     void major_mutation(string s1, string s2){
         int cnt, cnt1;
 
@@ -162,7 +167,7 @@ public:
 
 
     }
-
+    //جهش معکوس
     void inverse_mutation(string s) {
         int cnt,cnt1;
         for (int i = 0; i <= RNA.size() - s.size(); i++) {
@@ -211,7 +216,7 @@ public:
         }
 
     }
-
+    // this method prints all the complementary palindrome substrings of DNA or RNA
     void complementary_palindrome(int bi){
         int n;
 
@@ -276,10 +281,13 @@ public:
 
 class Cell{
 public:
+    //the number of chromosomes in a cell
     int chromosome_count;
+
+    //The vector of chromosomes, the chromosomes are considered as DNA strings.
     vector<Genome> chromosomes;
 
-
+    //This method receives the cell contents and stores them in the vector.
     void receive(int n){
         string chro;
         chromosome_count = n;
@@ -291,7 +299,7 @@ public:
 
         }
     }
-
+    //This method prints the chromosomes.
     void display(){
         for(int i=0; i< chromosomes.size(); i++){
             cout<< i+1 << ':'<< endl;
@@ -299,7 +307,7 @@ public:
         }
     }
 
-
+    //This method checks the required conditions, and if they are not met, the cell will be deleted.
     void cell_death(){
         int counter, counter1, counter2;
         for(auto i : chromosomes){
@@ -358,11 +366,4 @@ public:
 };
 
 
-
-int main(){
-    Genome spider;
-    spider.receive("AATTAAGCTC");
-    spider.complementary_palindrome(1);
-    return 0;
-}
 
