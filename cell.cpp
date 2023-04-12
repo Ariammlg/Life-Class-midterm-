@@ -212,6 +212,146 @@ public:
 
     }
 
+    void complementary_palindrome(int bi){
+        int n;
+
+        switch(bi){
+            case 1:
+                for(int i=3; i<= RNA.size(); i++){
+                    for(int j=0; j< RNA.size()+1-i; j++ ){
+                        n=0;
+                        for(int k = j; k < j+i; k++){
+                            if(RNA[k] == comp_char(RNA[j+i-1-(k-j)])){
+                                n++;
+                            }
+                        }
+                        if(n == i){
+                            for(int k=j; k<j+i; k++){
+                                cout<< RNA[k];
+                            }
+                            cout<< ", ";
+                        }
+                    }
+                }
+                break;
+
+
+            case 2:
+                for(int i=3; i<= (DNA.size()-1)/2; i++){
+                    for(int j=0; j< (DNA.size()-1)/2-i+1; j++ ){
+                        n=0;
+                        for(int k = j; k < j+i; k++){
+                            if(DNA[k] == comp_char(DNA[i+j-1-(k-j)]) ){
+                                n++;
+                            }
+                        }
+                        if(n == i){
+                            for(int k=j; k<j+i; k++){
+                                cout<< DNA[k];
+                            }
+                            cout<< ", ";
+                        }
+                    }
+                }
+
+                break;
+        }
+
+
+        }
+
+
+
+
+
+
+
+
+};
+
+
+
+
+
+
+class Cell{
+public:
+    int chromosome_count;
+    vector<Genome> chromosomes;
+
+
+    void receive(int n){
+        string chro;
+        chromosome_count = n;
+        for(int i=0; i<n; i++){
+            Genome a;
+            std::getline(cin, chro);
+            chromosomes.push_back(a);
+            chromosomes[i].receive(chro);
+
+        }
+    }
+
+    void display(){
+        for(int i=0; i< chromosomes.size(); i++){
+            cout<< i+1 << ':'<< endl;
+            chromosomes[i].display_DNA();
+        }
+    }
+
+
+    void cell_death(){
+        int counter, counter1, counter2;
+        for(auto i : chromosomes){
+            counter = 0;
+            counter1 = 0;
+            counter2 = 0;
+            for(int j=0; j < (i.DNA.size()-1)/2; j++){
+                if(i.DNA[j] != comp_char(i.DNA[j+(i.DNA.size()+1)/2])){
+                    counter++;
+                }
+                else if((i.DNA[j] == 'A' && i.DNA[j+(i.DNA.size()+1)/2] == 'T') || (i.DNA[j]== 'T' && i.DNA[j+(i.DNA.size()+1)/2]== 'A')){
+                    counter1++;
+                }
+                else{
+                    counter2++;
+                }
+
+            }
+            if(counter > 5 || counter1 > 3*counter2){
+                delete this;
+            }
+        }
+    }
+
+
+    void minor_mutation(char c1, char c2, int n, int m){
+        chromosomes[m-1].minor_mutation(c1, c2, n);
+    }
+
+
+    void major_mutation(string s1, int n, string s2, int m){
+        chromosomes[n-1].major_mutation(s1, s2);
+        chromosomes[m-1].major_mutation(s2, s1);
+
+    }
+
+    void inverse_mutation(string s, int n){
+
+        chromosomes[n-1].inverse_mutation(s);
+
+    }
+
+    /* void complementary_palindrome(Genome a): we write this method into the previous class because,
+        it applies to chromosomes(DNA) so this method had better be a Genome's method. */
+
+    void complementary_palindrome(int t){
+        chromosomes[t-1].complementary_palindrome(2);
+    }
+
+
+
+
 
 
 
@@ -220,13 +360,9 @@ public:
 
 
 int main(){
-    Genome g1;
-    g1.receive("ATCGATCG");
-    g1.receive("AAGTCTCAGT TTCAGAGTCA");
-    g1.inverse_mutation("GATC");
-    g1.display_DNA();
-    g1.display_RNA();
+    Genome spider;
+    spider.receive("AATTAAGCTC");
+    spider.complementary_palindrome(1);
     return 0;
 }
-
 
