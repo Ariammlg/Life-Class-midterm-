@@ -8,8 +8,10 @@ char comp_char(char c);
 
 class Genome{
 public:
+    // We use vectors of characters instead of strings due to their flexibility.
     std::vector<char> RNA;
     std::vector<char> DNA;
+
     void receive(std::string s);
     std::vector<char> DNA_Builder();
     void display_RNA();
@@ -23,7 +25,10 @@ public:
 
 class Cell{
 public:
+    //the number of chromosomes in a cell
     int chromosome_count;
+
+    //The vector of chromosomes, the chromosomes are considered as DNA strings.
     std::vector<Genome> chromosomes;
     void receive(int n);
     void display();

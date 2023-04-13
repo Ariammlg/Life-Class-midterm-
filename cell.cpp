@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "cell.h"
 #include "animal.h"
 
 using std:: cout, std::cin, std::endl, std::vector, std::string;
@@ -16,20 +17,19 @@ char comp_char(char c){
             return 'G';
         case 'G':
             return 'C';
+        default:
+            return' ';
     }
+
 }
 
 
-class Genome{
-public:
-    // We use vectors of characters instead of strings due to their flexibility.
-    vector<char> RNA;
-    vector<char> DNA;
+
 
 
     // Receives RNA and DNA as strings and convert them to the vectors.
     //Note that DNA is received this way: "AATTCC TTAAGG" .
-    void receive(string s){
+    void Genome::receive(string s){
         if(s.find(' ') == string::npos){
             for(int i=0; i<s.size();i++){
                 RNA.push_back(s[i]);
@@ -42,7 +42,7 @@ public:
         }
     }
     //This method builds the DNA from the RNA and prints it.
-    vector<char> DNA_Builder(){
+    vector<char> Genome::DNA_Builder(){
         vector<char> Complement;
         for(int i=0; i< RNA.size();i++){
             Complement.push_back(comp_char(RNA[i]));
@@ -53,14 +53,14 @@ public:
     }
 
     //This method prints RNA.
-    void display_RNA(){
+    void Genome::display_RNA(){
         for(int i=0; i < RNA.size(); i++){
             cout<< RNA[i];
         }
         cout<<endl;
     }
     //This method prints DNA.
-    void display_DNA(){
+    void Genome::display_DNA(){
         for(int i=0; i < DNA.size(); i++ ){
             if(DNA[i] != ' '){
                 cout << DNA[i];
@@ -72,7 +72,7 @@ public:
         cout<<endl<<endl;
     }
     // جهش کوچک
-    void minor_mutation(char c1, char c2, int n){
+    void Genome::minor_mutation(char c1, char c2, int n){
         int m = n;
         for(int i=0; i < RNA.size() && m > 0 ; i++){
             if(RNA[i] == c1){
@@ -103,7 +103,7 @@ public:
 
     }
     // جهش بزرگ
-    void major_mutation(string s1, string s2){
+    void Genome::major_mutation(string s1, string s2){
         int cnt, cnt1;
 
         for(int i=0; i<= RNA.size()-s1.size(); i++){
@@ -169,7 +169,7 @@ public:
 
     }
     //جهش معکوس
-    void inverse_mutation(string s) {
+    void Genome::inverse_mutation(string s) {
         int cnt,cnt1;
         for (int i = 0; i <= RNA.size() - s.size(); i++) {
             cnt = 0;
@@ -218,7 +218,7 @@ public:
 
     }
     // this method prints all the complementary palindrome substrings of DNA or RNA
-    void complementary_palindrome(int bi){
+    void Genome::complementary_palindrome(int bi){
         int n;
 
         switch(bi){
@@ -261,35 +261,16 @@ public:
                 }
 
                 break;
+            default:
+                cout<< endl;
         }
-
-
-        }
-
+    }
 
 
 
-
-
-
-
-};
-
-
-
-
-
-
-class Cell{
-public:
-    //the number of chromosomes in a cell
-    int chromosome_count;
-
-    //The vector of chromosomes, the chromosomes are considered as DNA strings.
-    vector<Genome> chromosomes;
 
     //This method receives the cell contents and stores them in the vector.
-    void receive(int n){
+    void Cell::receive(int n){
         string chro;
         chromosome_count = n;
         for(int i=0; i<n; i++){
@@ -301,7 +282,7 @@ public:
         }
     }
     //This method prints the chromosomes.
-    void display(){
+    void Cell::display(){
         for(int i=0; i< chromosomes.size(); i++){
             cout<< i+1 << ':'<< endl;
             chromosomes[i].display_DNA();
@@ -309,7 +290,7 @@ public:
     }
 
     //This method checks the required conditions, and if they are not met, the cell will be deleted.
-    void cell_death(){
+    void Cell::cell_death(){
         int counter, counter1, counter2;
         for(auto i : chromosomes){
             counter = 0;
@@ -334,18 +315,18 @@ public:
     }
 
 
-    void minor_mutation(char c1, char c2, int n, int m){
+    void Cell::minor_mutation(char c1, char c2, int n, int m){
         chromosomes[m-1].minor_mutation(c1, c2, n);
     }
 
 
-    void major_mutation(string s1, int n, string s2, int m){
+    void Cell::major_mutation(string s1, int n, string s2, int m){
         chromosomes[n-1].major_mutation(s1, s2);
         chromosomes[m-1].major_mutation(s2, s1);
 
     }
 
-    void inverse_mutation(string s, int n){
+    void Cell::inverse_mutation(string s, int n){
 
         chromosomes[n-1].inverse_mutation(s);
 
@@ -354,17 +335,6 @@ public:
     /* void complementary_palindrome(Genome a): we write this method into the previous class because,
         it applies to chromosomes(DNA) so this method had better be a Genome's method. */
 
-    void complementary_palindrome(int t){
+    void Cell::complementary_palindrome(int t){
         chromosomes[t-1].complementary_palindrome(2);
     }
-
-
-
-
-
-
-
-};
-
-
-
