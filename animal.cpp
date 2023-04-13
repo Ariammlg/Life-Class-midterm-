@@ -60,11 +60,8 @@ int levenshtein_distance(vector<char> v1, vector<char> v2 ){
 }
 
 
-
-class Animal: public Cell{
-public:
     //This function returns the offspring from an asexual reproduction.
-    Animal asexual_reproduction(){
+    Animal  Animal::asexual_reproduction(){
         Animal A;
         int m, n=0;
         int random_index ;
@@ -147,7 +144,33 @@ public:
         return A;
     }
 
-};
+    //This function checks if the chromosomes are healthy and in case they are not,
+    //they will be deleted from the animal's cell.
+    void Animal::chromosome_death(){
+        int counter, counter1, counter2, n=0;
+        for(auto i : chromosomes){
+            counter = 0;
+            counter1 = 0;
+            counter2 = 0;
+            for(int j=0; j < (i.DNA.size()-1)/2; j++){
+                if(i.DNA[j] != comp_char(i.DNA[j+(i.DNA.size()+1)/2])){
+                    counter++;
+                }
+                else if((i.DNA[j] == 'A' && i.DNA[j+(i.DNA.size()+1)/2] == 'T') || (i.DNA[j]== 'T' && i.DNA[j+(i.DNA.size()+1)/2]== 'A')){
+                    counter1++;
+                }
+                else{
+                    counter2++;
+                }
+
+            }
+            if(counter > 5 || counter1 > 3*counter2){
+                chromosomes.erase(chromosomes.begin()+n);
+                chromosome_count--;
+            }
+            n++;
+        }
+    }
 
 
 //This function prints the genetic similarity percentage, and returns the percentage as a double.
@@ -170,7 +193,6 @@ double genetic_similarity(Animal a1, Animal a2){
      sum += t;
     }
     ave = sum/(double)R.size();
-    //cout<< "The genetic similarity percentage between these two animals is " << ave << '%'<< endl;
     return ave;
     
 }
@@ -210,14 +232,4 @@ Animal operator+( Animal a1, Animal a2){
         }
     }
     return B;
-}
-
-
-
-int main(){
-    Animal T1, T2;
-    T1.receive(2);
-    T2.receive(2);
-    (T1+T2).display();
-    return 0;
 }

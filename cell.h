@@ -1,5 +1,5 @@
-#ifndef ANIMAL_H
-#define ANIMAL_H
+#ifndef CELL_H
+#define CELL_H
 #include <iostream>
 #include <vector>
 
