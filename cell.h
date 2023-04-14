@@ -12,7 +12,8 @@ public:
     std::vector<char> RNA;
     std::vector<char> DNA;
 
-    void receive(std::string s);
+    void receive_RNA(const std::string& s);
+    void receive_DNA(const std::string& s);
     std::vector<char> DNA_Builder();
     void display_RNA();
     void display_DNA();
@@ -34,8 +35,8 @@ public:
     void display();
     void cell_death();
     void minor_mutation(char c1, char c2, int n, int m);
-    void major_mutation(std::string s1, int n, std::string s2, int m);
-    void inverse_mutation(std::string s, int n);
+    void major_mutation(const std::string& s1, int n,const std::string& s2, int m);
+    void inverse_mutation(const std::string& s, int n);
     void complementary_palindrome(int t);
 
 };

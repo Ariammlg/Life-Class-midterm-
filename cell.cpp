@@ -26,26 +26,36 @@ char comp_char(char c){
 
 
 
-    // Receives RNA and DNA as strings and convert them to the vectors.
-    //Note that DNA is received this way: "AATTCC TTAAGG" .
-    void Genome::receive(string s){
-        if(s.find(' ') == string::npos){
-            for(int i=0; i<s.size();i++){
-                RNA.push_back(s[i]);
+    // Receives RNA  as a string and convert it to a vector.
+
+    void Genome::receive_RNA(const string& s){
+            for(auto i: s){
+                RNA.push_back(i);
             }
-        }
-        else{
-            for(int i=0; i < s.size();i++){
-                DNA.push_back(s[i]);
-            }
-        }
     }
+
+
+    // Receives DNA  as a string and convert it to a vector.
+    //Note that DNA is received this way: "AATTCC TTAAGG" .
+    void Genome::receive_DNA(const string& s){
+            for(auto i: s){
+                DNA.push_back(i);
+            }
+    }
+
+
     //This method builds the DNA from the RNA and prints it.
     vector<char> Genome::DNA_Builder(){
         vector<char> Complement;
-        for(int i=0; i< RNA.size();i++){
-            Complement.push_back(comp_char(RNA[i]));
-            cout << comp_char(RNA[i]);
+        for(auto i: RNA){
+            Complement.push_back(comp_char(i));
+        }
+        for(auto i: RNA){
+            cout<< i;
+        }
+        cout<<endl;
+        for(auto i : Complement){
+            cout<<i;
         }
         cout<< endl;
         return Complement;
@@ -53,16 +63,16 @@ char comp_char(char c){
 
     //This method prints RNA.
     void Genome::display_RNA(){
-        for(int i=0; i < RNA.size(); i++){
-            cout<< RNA[i];
+        for(auto i: RNA ){
+            cout<< i;
         }
-        cout<<endl;
+        cout<<endl<<endl;
     }
     //This method prints DNA.
     void Genome::display_DNA(){
-        for(int i=0; i < DNA.size(); i++ ){
-            if(DNA[i] != ' '){
-                cout << DNA[i];
+        for(auto i: DNA){
+            if(i != ' '){
+                cout << i;
             }
             else{
                 cout<< endl;
@@ -70,6 +80,8 @@ char comp_char(char c){
         }
         cout<<endl<<endl;
     }
+
+
     // جهش کوچک
     void Genome::minor_mutation(char c1, char c2, int n){
         int m = n;
@@ -79,28 +91,23 @@ char comp_char(char c){
                 m --;
             }
         }
+
         m = n;
         for(int i=0; i< (DNA.size()-1)/2 && m > 0 ; i++){
             if(DNA[i] == c1){
                 DNA[i] = c2;
                 DNA[i+((DNA.size()-1)/2)+1]= comp_char(c2);
                 m--;
-                if(m <= 0){
-                    break;
-                }
             }
-            if(DNA[i+((DNA.size()-1)/2)+2] == c1){
-                DNA[i+((DNA.size()-1)/2)+2] = c2;
-                DNA[i+1]= comp_char(c2);
+            else if(DNA[i+((DNA.size()-1)/2)+1] == c1){
+                DNA[i+((DNA.size()-1)/2)+1] = c2;
+                DNA[i]= comp_char(c2);
                 m--;
             }
-
-
         }
-
-
-
     }
+
+
     // جهش بزرگ
     void Genome::major_mutation(string s1, string s2){
         int cnt, cnt1;
@@ -159,14 +166,11 @@ char comp_char(char c){
                     DNA.insert(DNA.begin()+k+i, comp_char(s2[k]));
                 }
                 break;
-
             }
-
-
         }
-
-
     }
+
+
     //جهش معکوس
     void Genome::inverse_mutation(string s) {
         int cnt,cnt1;
@@ -212,10 +216,12 @@ char comp_char(char c){
                     DNA[i+p+(DNA.size()+1)/2] = s[s.size()-1-p];
                     DNA[i+p]= comp_char(DNA[i+p+(DNA.size()+1)/2]);
                 }
+                break;
             }
         }
-
     }
+
+
     // this method prints all the complementary palindrome substrings of DNA or RNA
     void Genome::complementary_palindrome(int bi){
         int n;
@@ -276,7 +282,7 @@ char comp_char(char c){
             Genome a;
             std::getline(cin, chro);
             chromosomes.push_back(a);
-            chromosomes[i].receive(chro);
+            chromosomes[i].receive_DNA(chro);
 
         }
     }
@@ -308,7 +314,11 @@ char comp_char(char c){
 
             }
             if(counter > 5 || counter1 > 3*counter2){
+                cout<< "The cell is not healthy and it's going to die"<<endl;
                 delete this;
+            }
+            else{
+                cout<<"The cell is healthy!";
             }
         }
     }
@@ -319,13 +329,13 @@ char comp_char(char c){
     }
 
 
-    void Cell::major_mutation(string s1, int n, string s2, int m){
+    void Cell::major_mutation(const string& s1, int n,const string& s2, int m){
         chromosomes[n-1].major_mutation(s1, s2);
         chromosomes[m-1].major_mutation(s2, s1);
 
     }
 
-    void Cell::inverse_mutation(string s, int n){
+    void Cell::inverse_mutation(const string& s, int n){
 
         chromosomes[n-1].inverse_mutation(s);
 
@@ -337,3 +347,14 @@ char comp_char(char c){
     void Cell::complementary_palindrome(int t){
         chromosomes[t-1].complementary_palindrome(2);
     }
+
+//    int main(){
+//        Genome G;
+//        string s1, s2;
+//        std::getline(cin, s1);
+//        std::getline(cin, s2);
+//        G.receive_DNA(s1);
+//        G.receive_RNA(s2);
+//        G.minor_mutation('T', 'G', 2);
+//        G.display_DNA();
+//    }
