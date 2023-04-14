@@ -30,6 +30,25 @@ int max(int a1, int a2){
 }
 
 
+//This bool function returns true if the first argument is a subvector of the second.
+bool inv(vector<char> v1, vector<char> v2){
+    int n;
+    for(int i=0; i <= v2.size()-v1.size();i++){
+        n=0;
+        for(int j=i; j < i+v1.size(); j++){
+            if(v2[j]==v1[j-i]){
+                n++;
+            }
+        }
+        if(n== v1.size()){
+            return true;
+        }
+
+    }
+    return false;
+}
+
+
 
 // this function returns the Levenshtein distance of 2 strings. (vector<char> here)
 int levenshtein_distance(vector<char> v1, vector<char> v2 ){
@@ -232,4 +251,51 @@ Animal operator+( Animal a1, Animal a2){
         }
     }
     return B;
+}
+
+
+void Virus::infection(Animal& a){
+    vector<char> cb;
+    vector<vector<char>> t;
+    int count,n, m= a.chromosomes[0].DNA.size();
+    for(int i=0; i< a.chromosome_count;i++){
+        if( m>= a.chromosomes[i].DNA.size() ){
+            m=a.chromosomes[i].DNA.size();
+            n=i;
+        }
+    }
+    for(int i= (m-1)/2; i>0; i--){
+        for(int j=0; j<= (m-1)/2 -i; j++ ){
+            for(int k=j; k< j+i; k++){
+                cb.push_back(a.chromosomes[n].DNA[k]);
+            }
+            count=0;
+            for(int s=0; s<a.chromosome_count; s++){
+                vector<char> checker(a.chromosomes[s].DNA.begin(), a.chromosomes[s].DNA.begin()+(a.chromosomes[s].DNA.size()-1)/2);
+                if(inv(cb,checker)){
+                    count++;
+                    checker.clear();
+                }
+            }
+            if(count== a.chromosome_count){
+                t.push_back(cb);
+            }
+            cb.clear();
+        }
+        if(!t.empty()){
+            break;
+        }
+    }
+    vector<char> comp;
+    for(auto s: t){
+       for(auto q: s){
+           comp.push_back(comp_char(q));
+       }
+       if(RNA==s || RNA==comp){
+           cout<< "The virus is infectious to this Animal."<<endl;
+           return;
+       }
+    }
+    cout<<"The virus is not infectious to this Animal."<< endl;
+
 }
