@@ -184,9 +184,8 @@ int levenshtein_distance(vector<char> v1, vector<char> v2 ){
 
             }
             if(counter > 5 || counter1 > 3*counter2){
-                cout<<"Chromosome "<< n+1<<" is unstable and is going to die."<<endl;
-                chromosomes.erase(chromosomes.begin()+n);
-                chromosome_count--;
+                cout<<"Chromosome "<< n+1<<" is unstable and is going to be deleted."<<endl;
+                chromosomes[n].DNA.clear();
             }
             else{
                 cout<<"Chromosome "<<n+1<< " is healthy!"<<endl;
