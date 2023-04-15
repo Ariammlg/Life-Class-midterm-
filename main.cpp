@@ -205,12 +205,14 @@ int main(){
                     cin.ignore();
                     cout<<"Enter the chromosomes of the father on different lines: "<<endl;
                     R.receive(m2);
-                    cout<<"The chromosomes of the offspring are: "<<endl;
-                    (A+R).display();
-                    cout<<"The genetic similarity between the mother and the offspring is "
-                    <<genetic_similarity(A,(A+R))<<"%. "<<endl;
-                    cout<<"The genetic similarity between the father and the offspring is "
-                    <<genetic_similarity(R,(A+R))<<"%."<<endl;
+                    if(!(A+R).chromosomes.empty()){
+                        cout<<"The chromosomes of the offspring are: "<<endl;
+                        (A+R).display();
+                        cout<<"The genetic similarity between the mother and the offspring is "
+                            <<genetic_similarity(A,(A+R))<<"%. "<<endl;
+                        cout<<"The genetic similarity between the father and the offspring is "
+                            <<genetic_similarity(R,(A+R))<<"%."<<endl;
+                    }
                     break;
                 case 4:
                     cout<<"How many chromosomes does the animal have?: "<<endl;
