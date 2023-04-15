@@ -18,6 +18,7 @@ char comp_char(char c){
             return 'C';
         default:
             return' ';
+            break;
     }
 
 }
@@ -84,13 +85,15 @@ char comp_char(char c){
 
     // جهش کوچک
     void Genome::minor_mutation(char c1, char c2, int n){
-        int m = n;
-        for(int i=0; i < RNA.size() && m > 0 ; i++){
-            if(RNA[i] == c1){
-                RNA[i] = c2;
-                m --;
+        int m;
+        if(!RNA.empty()){
+                for(int i=0; i < RNA.size() && m > 0 ; i++){
+                    if(RNA[i] == c1){
+                        RNA[i] = c2;
+                        m --;
+                    }
+                }
             }
-        }
 
         m = n;
         for(int i=0; i< (DNA.size()-1)/2 && m > 0 ; i++){
@@ -111,25 +114,26 @@ char comp_char(char c){
     // جهش بزرگ
     void Genome::major_mutation(string s1, string s2){
         int cnt, cnt1;
-
-        for(int i=0; i<= RNA.size()-s1.size(); i++){
-            cnt=0;
-            for(int j=0; j< s1.size(); j++){
-                if(s1[j] == RNA[j+i] ){
-                    cnt++;
+        if(!RNA.empty()){
+            for(int i=0; i<= RNA.size()-s1.size(); i++){
+                cnt=0;
+                for(int j=0; j< s1.size(); j++){
+                    if(s1[j] == RNA[j+i] ){
+                        cnt++;
+                    }
+                }
+                if(cnt == s1.size()){
+                    for(int k=0; k<s1.size(); k++){
+                        RNA.erase(RNA.begin()+i);
+                    }
+                    for(int k=0; k<s2.size(); k++){
+                        RNA.insert(RNA.begin()+k+i,s2[k]);
+                    }
+                    break;
                 }
             }
-            if(cnt == s1.size()){
-                for(int k=0; k<s1.size(); k++){
-                    RNA.erase(RNA.begin()+i);
-                }
-                for(int k=0; k<s2.size(); k++){
-                    RNA.insert(RNA.begin()+k+i,s2[k]);
-                }
-                break;
-            }
-
         }
+
 
         for(int i=0; i <= (DNA.size()-1)/2 - s1.size() ; i++ ){
             cnt = 0;
@@ -174,20 +178,21 @@ char comp_char(char c){
     //جهش معکوس
     void Genome::inverse_mutation(string s) {
         int cnt,cnt1;
-        for (int i = 0; i <= RNA.size() - s.size(); i++) {
-            cnt = 0;
-            for (int j = 0; j < s.size(); j++) {
-                if (s[j] == RNA[i + j]) {
-                    cnt++;
+        if(!RNA.empty()){
+            for (int i = 0; i <= RNA.size() - s.size(); i++) {
+                cnt = 0;
+                for (int j = 0; j < s.size(); j++) {
+                    if (s[j] == RNA[i + j]) {
+                        cnt++;
+                    }
+                }
+                if (cnt == s.size()) {
+                    for (int p = 0; p < s.size(); p++) {
+                        RNA[i + p] = s[s.size() - 1 - p];
+                    }
+                    break;
                 }
             }
-            if (cnt == s.size()) {
-                for (int p = 0; p < s.size(); p++) {
-                    RNA[i + p] = s[s.size() - 1 - p];
-                }
-                break;
-            }
-
         }
 
         for(int i=0; i <= (DNA.size()-1)/2 - s.size() ; i++ ){
@@ -263,11 +268,26 @@ char comp_char(char c){
                             cout<< ", ";
                         }
                     }
-                }
+                    for(int j= (DNA.size()-1)/2+1; j<DNA.size()-i+2; j++){
+                        n=0;
+                        for(int k = j; k < j+i; k++){
+                            if(DNA[k] == comp_char(DNA[i+j-1-(k-j)]) ){
+                                n++;
+                            }
+                        }
+                        if(n == i){
+                            for(int k=j; k<j+i; k++){
+                                cout<< DNA[k];
+                            }
+                            cout<< ", ";
+                        }
 
+                    }
+                }
                 break;
             default:
                 cout<< endl;
+                break;
         }
     }
 
@@ -280,6 +300,21 @@ char comp_char(char c){
         chromosome_count = n;
         for(int i=0; i<n; i++){
             Genome a;
+            switch(i+1){
+                case 1:
+                    cout<< "Enter the "<< i+1<<"st chromosome: "<<endl;
+                    break;
+                case 2:
+                    cout<<"Enter the "<<i+1<<"nd chromosome: "<<endl;
+                    break;
+                case 3:
+                    cout<<"Enter the " <<i+1<<"rd chromosome: "<<endl;
+                    break;
+                default:
+                    cout<<"Enter the "<<i+1<<"th chromosome: "<<endl;
+                    break;
+
+            }
             std::getline(cin, chro);
             chromosomes.push_back(a);
             chromosomes[i].receive_DNA(chro);
@@ -316,11 +351,10 @@ char comp_char(char c){
             if(counter > 5 || counter1 > 3*counter2){
                 cout<< "The cell is not healthy and it's going to die"<<endl;
                 delete this;
-            }
-            else{
-                cout<<"The cell is healthy!";
+                return;
             }
         }
+        cout<<"The cell is healthy!"<<endl;
     }
 
 
@@ -347,14 +381,3 @@ char comp_char(char c){
     void Cell::complementary_palindrome(int t){
         chromosomes[t-1].complementary_palindrome(2);
     }
-
-//    int main(){
-//        Genome G;
-//        string s1, s2;
-//        std::getline(cin, s1);
-//        std::getline(cin, s2);
-//        G.receive_DNA(s1);
-//        G.receive_RNA(s2);
-//        G.minor_mutation('T', 'G', 2);
-//        G.display_DNA();
-//    }

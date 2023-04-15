@@ -184,8 +184,12 @@ int levenshtein_distance(vector<char> v1, vector<char> v2 ){
 
             }
             if(counter > 5 || counter1 > 3*counter2){
+                cout<<"Chromosome "<< n+1<<" is unstable and is going to die."<<endl;
                 chromosomes.erase(chromosomes.begin()+n);
                 chromosome_count--;
+            }
+            else{
+                cout<<"Chromosome "<<n+1<< " is healthy!"<<endl;
             }
             n++;
         }
@@ -271,10 +275,8 @@ void Virus::infection(Animal& a){
             }
             count=0;
             for(int s=0; s<a.chromosome_count; s++){
-                vector<char> checker(a.chromosomes[s].DNA.begin(), a.chromosomes[s].DNA.begin()+(a.chromosomes[s].DNA.size()-1)/2);
-                if(inv(cb,checker)){
+                if(inv(cb,a.chromosomes[s].DNA)){
                     count++;
-                    checker.clear();
                 }
             }
             if(count== a.chromosome_count){
@@ -282,10 +284,36 @@ void Virus::infection(Animal& a){
             }
             cb.clear();
         }
+
+        for(int j=(m-1)/2+1; j<= m -i; j++ ){
+            for(int k=j; k< j+i; k++){
+                cb.push_back(a.chromosomes[n].DNA[k]);
+            }
+            count=0;
+            for(int s=0; s<a.chromosome_count; s++){
+                if(inv(cb,a.chromosomes[s].DNA)){
+                    count++;
+                }
+            }
+            if(count== a.chromosome_count){
+                t.push_back(cb);
+            }
+            cb.clear();
+        }
+
+
         if(!t.empty()){
             break;
         }
     }
+    cout<<"The longest sub DNA(s) is(are): "<<endl;
+    for(auto s: t){
+        for(auto l: s){
+            cout<<l;
+        }
+        cout<<", ";
+    }
+    cout<<endl;
     vector<char> comp;
     for(auto s: t){
        for(auto q: s){
@@ -297,5 +325,4 @@ void Virus::infection(Animal& a){
        }
     }
     cout<<"The virus is not infectious to this Animal."<< endl;
-
 }
