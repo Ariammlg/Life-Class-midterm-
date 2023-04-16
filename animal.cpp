@@ -52,7 +52,7 @@ bool inv(vector<char> v1, vector<char> v2){
 
 // this function returns the Levenshtein distance of 2 strings. (vector<char> here)
 int levenshtein_distance(vector<char> v1, vector<char> v2 ){
-    if(v1.size()==0){
+    if(v1.empty()){
         return v2.size();
     }
     else if(v2.size()==0){
@@ -322,6 +322,7 @@ void Virus::infection(Animal& a){
            cout<< "The virus is infectious to this Animal."<<endl;
            return;
        }
+       comp.clear();
     }
     cout<<"The virus is not infectious to this Animal."<< endl;
 }

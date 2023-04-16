@@ -18,7 +18,6 @@ char comp_char(char c){
             return 'C';
         default:
             return' ';
-            break;
     }
 
 }
@@ -30,9 +29,9 @@ char comp_char(char c){
     // Receives RNA  as a string and convert it to a vector.
 
     void Genome::receive_RNA(const string& s){
-            for(auto i: s){
-                RNA.push_back(i);
-            }
+        for(auto i: s){
+            RNA.push_back(i);
+        }
     }
 
 
@@ -85,7 +84,7 @@ char comp_char(char c){
 
     // جهش کوچک
     void Genome::minor_mutation(char c1, char c2, int n){
-        int m;
+        int m=n;
         if(!RNA.empty()){
                 for(int i=0; i < RNA.size() && m > 0 ; i++){
                     if(RNA[i] == c1){
